@@ -1,94 +1,98 @@
 <div align="center">
 
-<img src="docs/hero.jpg" alt="Mascota de Utity: cápsula flotante navy con cascos de música, módulo de terminal y levitación verde de éxito" width="720">
+<img src="docs/hero.jpg" alt="Utity mascot: a floating navy capsule wearing headphones, with a terminal module and green success levitation light" width="720">
 
 # Utity Character
 
-**La mascota 3D de [Utity](https://utity.io).** Una máquina flotante con herramientas intercambiables: segura, directa y algo seca. Resuelve sin ruido.
+**The 3D mascot of [Utity](https://utity.io).** A floating machine with swappable tools: confident, direct, a little dry. Gets things done without the noise.
 
-[Prototipo](mascota/index.html) · three.js · sin build
+[Prototype](mascota/index.html) · three.js · no build step
 
 </div>
 
 ---
 
-## Qué es
+## What it is
 
-Un personaje que se define por **estados y comportamiento**, no solo por el dibujo. Sirve como protagonista animado de la landing y como voz de la marca en redes.
+A character defined by **states and behaviour**, not just by its drawing. It works as the animated lead of the landing page and as the brand's voice on social media.
 
-- **Cuerpo:** cápsula vertical en navy con tapa y placas cerámicas. Todo el lenguaje corporal sale de inclinaciones y giros.
-- **Cara:** visor de cristal oscuro con dos ojos de luz parametrizados.
-- **Módulos flotantes:** llevan la herramienta (cursor, llave o terminal). Así cuenta diseño y desarrollo a la vez.
-- **Luz de levitación:** indica el estado.
+- **Body:** a vertical navy capsule with ceramic cap and side panels. All body language comes from tilts and turns.
+- **Face:** a dark glass visor with two parametric light eyes.
+- **Floating modules:** they carry the tool (cursor, wrench or terminal), so the character tells design and development at once.
+- **Levitation light:** shows the current state.
 
-## Expresiones
+## Expressions
 
-<img src="docs/expresiones.jpg" alt="12 expresiones de la mascota" width="100%">
+<img src="docs/expresiones.jpg" alt="12 mascot expressions" width="100%">
 
-<sub>Atento · Concentrado · Éxito · Dudando · Error · Sorprendido · Dormido · **Seca** · Guiño · Pensando · Molesto · Triste</sub>
+<sub>Attentive · Focused · Success · Doubtful · Error · Surprised · Asleep · **Dry** · Wink · Thinking · Annoyed · Sad</sub>
 
-Hay 18 expresiones en total. Todas salen de una sola forma base de ojo y de reglas fijas:
+There are 18 expressions in total. Every one comes from a single base eye shape and a fixed set of rules:
 
-| Parámetro | Rango | Uso |
+| Parameter | Range | Use |
 | --- | --- | --- |
-| Altura | 0 – 1 | Por debajo de 0.1 colapsa a guion (parpadeo y dormido) |
-| Inclinación | ±20° | Positiva: foco y error. Negativa: duda y tristeza |
-| Curvatura | −1 – 1 | Positiva arquea hacia arriba (éxito) |
-| Chaflán | 0 – 1 | Siempre en la esquina exterior superior |
-| Ceja | 0 – 1 | Solo en la expresión *seca* ("Ya, claro.") |
+| Height | 0 – 1 | Below 0.1 it collapses to a dash (blink and sleep) |
+| Tilt | ±20° | Positive: focus and error. Negative: doubt and sadness |
+| Curvature | −1 – 1 | Positive arches upward (success) |
+| Chamfer | 0 – 1 | Always on the outer top corner |
+| Brow | 0 – 1 | Only in the *dry* expression ("Yeah, sure.") |
 
-Fijos: grosor de trazo, brillo y rejilla de líneas. Hay 8 formas base intercambiables; la recomendada es la **01, píldora con chaflán**.
+Fixed: stroke weight, glow and scanline grid. There are 8 interchangeable base shapes; the recommended one is **01, chamfered pill**.
 
-## Accesorios
+## Accessories
 
-<img src="docs/accesorios.jpg" alt="9 accesorios flotantes" width="640">
+<img src="docs/accesorios.jpg" alt="9 floating accessories" width="640">
 
-<sub>Gorra · Gorra atrás · Gorro de lana · Gorro de fiesta · Casco de obra · Cascos de música · Orejas de gato · Orejas de oso · Orejas de conejo</sub>
+<sub>Cap · Backwards cap · Beanie · Party hat · Hard hat · Headphones · Cat ears · Bear ears · Bunny ears</sub>
 
-Los accesorios flotan sobre la tapa y siguen al cuerpo con inercia. Las orejas también expresan: caen en error y tristeza, y se levantan con la sorpresa. Hay 6 acabados de marca.
+Accessories float above the cap and follow the body with inertia. Ears are expressive too: they droop on error and sadness and perk up on surprise. Six brand finishes are available.
 
-## Modos de visor
+## Visor modes
 
-<img src="docs/modos.jpg" alt="Modos código, ciencia y boceto" width="100%">
+<img src="docs/modos.gif" alt="Code, science and sketch visor modes, animated" width="100%">
 
-<sub>**Código:** lluvia de glifos con terminal · **Ciencia:** ecuaciones, átomo y gráfica · **Boceto:** wireframe que se dibuja solo</sub>
+<sub>**Code:** glyph rain with a typing terminal · **Science:** equations, an atom and a plotting graph · **Sketch:** a wireframe that draws itself</sub>
 
-## Movimientos
+In these modes the eyes collapse and a top-to-bottom sweep paints the visor, using the same light, glow and grid as the eyes.
 
-Ocho coreografías en bucle, sumadas a la expresión con fundidos para que nunca corte:
+## Motions
 
-`giro` · `voltereta` · `animado` · `triste` · `frío` · `excitado` · `saludo` · `vuelo en ocho`
+Eight looping choreographies, layered on top of the expression with crossfades so nothing ever cuts:
 
-Cada movimiento anticipa, actúa y se asienta. Módulos y accesorios lo siguen con retraso, y el aplastamiento máximo es del 7 %: es una máquina, no goma.
+`spin` · `flip` · `dance` · `sad` · `cold` · `excited` · `wave` · `figure-eight flight`
 
-## Estados
+Every motion anticipates, acts and settles. Modules and accessories follow with a delay, and squash is capped at 7 %: it's a machine, not rubber.
 
-| Estado | Color | Cuándo |
+## States
+
+| State | Colour | When |
 | --- | --- | --- |
-| Reposo | ![#4DB2FF](https://placehold.co/12x12/4DB2FF/4DB2FF.png) `#4DB2FF` | Esperando |
-| Trabajando | ![#FFB547](https://placehold.co/12x12/FFB547/FFB547.png) `#FFB547` | Cargando, procesando |
-| Éxito | ![#3DDC97](https://placehold.co/12x12/3DDC97/3DDC97.png) `#3DDC97` | Tarea completada |
-| Error | ![#FF6B5E](https://placehold.co/12x12/FF6B5E/FF6B5E.png) `#FF6B5E` | Algo falló |
-| Dormido | ![#5B86B5](https://placehold.co/12x12/5B86B5/5B86B5.png) `#5B86B5` | 14 s sin actividad |
+| Idle | ![#4DB2FF](https://placehold.co/12x12/4DB2FF/4DB2FF.png) `#4DB2FF` | Waiting |
+| Working | ![#FFB547](https://placehold.co/12x12/FFB547/FFB547.png) `#FFB547` | Loading, processing |
+| Success | ![#3DDC97](https://placehold.co/12x12/3DDC97/3DDC97.png) `#3DDC97` | Task done |
+| Error | ![#FF6B5E](https://placehold.co/12x12/FF6B5E/FF6B5E.png) `#FF6B5E` | Something failed |
+| Asleep | ![#5B86B5](https://placehold.co/12x12/5B86B5/5B86B5.png) `#5B86B5` | 14 s without activity |
 
-Navy de marca: `#1D4B7A`.
+Brand navy: `#1D4B7A`.
 
-## Uso
+## Usage
 
-Es un único HTML. Ábrelo en el navegador o sírvelo en local:
+It's a single HTML file. Open it in a browser or serve it locally:
 
 ```bash
 npx serve mascota
 ```
 
-En la página:
+On the page:
 
-- Sigue el cursor con el cuerpo y la mirada.
-- Un clic lo sorprende; tres clics rápidos sacan la *seca*.
-- Si lo dejas quieto, se duerme.
-- Desde el panel lateral eliges forma de ojo, expresión, modo, movimiento, accesorio, acabado y herramienta.
-- Tienes una demo automática y un botón de combinación aleatoria.
+- It follows the cursor with its body and gaze.
+- One click surprises it; three quick clicks trigger the *dry* look.
+- Leave it alone and it falls asleep.
+- The side panel picks eye shape, expression, visor mode, motion, accessory, finish and tool.
+- There's an auto demo and a random combination button.
+
+> The prototype UI is in Spanish; this README is the English reference.
 
 ---
 
-<div align="center"><sub>Utity · diseño y desarrollo</sub></div>
+<div align="center"><sub>Utity · design & development</sub></div>
