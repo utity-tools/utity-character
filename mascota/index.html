@@ -192,6 +192,7 @@ section > p.lede{margin:4px 0 14px;color:var(--muted);max-width:72ch}
         <dt>parpadeo</dt><dd>Cada 3–6 s, 160 ms. Nunca en error, dormido ni guiño.</dd>
         <dt>boca</dt><dd>Trazo de luz más fino que los ojos (24 px) y siempre centrado bajo ellos. Parámetros: ancho, curva, apertura, desplazamiento, inclinación y onda. Se abre al hablar, cuando cambia la frase. Desaparece en los modos de visor.</dd>
         <dt>barriga</dt><dd>Display de estado con el mismo chaflán y rejilla que el visor, en el color del estado: pulso en reposo, progreso trabajando, check en éxito, alerta en error, zetas dormido.</dd>
+        <dt>brazos</dt><dd>Son las placas laterales, que se sueltan del cuerpo: píldora con el chaflán en la punta, carcasa navy, cara cerámica y filo de luz en el color del estado. Flotan desde un hombro virtual y gesticulan girando. Al acoplarse vuelven a ser placas.</dd>
         <dt>modos</dt><dd>Código, ciencia y boceto sustituyen la cara. Primero colapsan los ojos, luego un barrido de arriba abajo pinta el modo. Mismo color, brillo y rejilla que los ojos: sigue siendo la misma luz.</dd>
       </dl>
       <div class="sw" aria-label="Colores de estado">
@@ -733,7 +734,7 @@ const sockets=[];
   body.add(bentPlane(.37,.51,R+.009,ang,-.02,new THREE.MeshPhysicalMaterial({color:C('#E5E9EE'),roughness:.33,clearcoat:.6,clearcoatRoughness:.15,alphaMap:maskTex(.37,.51,.045,.09),alphaTest:.5}),24,6));
   const ring=new THREE.Mesh(new THREE.TorusGeometry(.05,.009,12,40),levMat()); ring.position.set(s*(R+.015),-.02,0); ring.rotation.y=Math.PI/2; body.add(ring);
   const hub=new THREE.Mesh(new THREE.CircleGeometry(.04,32),graphiteMat); hub.position.set(s*(R+.013),-.02,0); hub.rotation.y=s*Math.PI/2; body.add(hub);
-  const sk=new THREE.Object3D(); sk.position.set(s*(R+.11),-.02,0); body.add(sk); sockets[s<0?0:1]=sk;
+  const sk=new THREE.Object3D(); sk.position.set(s*(R+.05),-.02,0); body.add(sk); sockets[s<0?0:1]=sk;
 });
 // display de estado en la barriga: cristal oscuro con el chaflán del visor
 const BW=.38, BH=.15, BY=-.2;
@@ -863,20 +864,25 @@ Object.values(accObjs).forEach(o=>{const w=new THREE.Group();w.add(o);w.userData
 
 /* ---------- Módulos y herramientas ---------- */
 function shapeFromPts(pts){return new THREE.Shape(pts.map(p=>new THREE.Vector2(p[0],-p[1])));}
-function makeModule(){
+// Brazos: placas laterales que se sueltan del cuerpo. Píldora con el chaflán de marca en la punta.
+const AW=.18, AH=.56, APIV=.27;
+const armShellGeo=(()=>{const g=new THREE.ExtrudeGeometry(shapeFromPts(rrPoints(AW,AH,AW/2,.06,8)),{depth:.045,bevelEnabled:true,bevelThickness:.014,bevelSize:.014,bevelSegments:3,curveSegments:16});g.center();return g;})();
+const armPlateGeo=new THREE.ShapeGeometry(shapeFromPts(rrPoints(AW-.045,AH-.06,(AW-.045)/2,.045,8)));
+function makeModule(side){
   const g=new THREE.Group();
-  const mp=[[0,-.055],[.09,-.055]];
-  for(let i=1;i<=8;i++){const a=-Math.PI/2+i/8*Math.PI/2;mp.push([.09+.04*Math.cos(a),-.015+.04*Math.sin(a)]);}
-  for(let i=0;i<=8;i++){const a=i/8*Math.PI/2;mp.push([.09+.04*Math.cos(a),.015+.04*Math.sin(a)]);}
-  mp.push([0,.055]);
-  g.add(mesh(new THREE.LatheGeometry(mp.map(p=>new THREE.Vector2(p[0],p[1])),48),navyMat,null,[Math.PI/2,0,0]));
-  g.add(mesh(new THREE.CircleGeometry(.082,40),ceramicMat,[0,0,.0565]));
-  g.add(mesh(new THREE.TorusGeometry(.1,.009,12,48),levMat(),[0,0,.05]));
-  const mount=new THREE.Group(); mount.position.set(0,.23,.03); g.add(mount);
-  g.userData={p:new THREE.Vector3(),mount,ry:0};
+  const arm=new THREE.Group(); arm.position.y=-APIV; g.add(arm);
+  const body2=new THREE.Group(); body2.rotation.z=Math.PI; if(side>0)body2.scale.x=-1; arm.add(body2);
+  body2.add(mesh(armShellGeo,navyMat));
+  body2.add(mesh(armPlateGeo,ceramicMat,[0,0,.0375]));
+  body2.add(mesh(new THREE.BoxGeometry(.018,.17,.006),levMat(),[0,.13,.039]));   // filo de luz hacia la punta
+  arm.add(mesh(new THREE.TorusGeometry(.026,.007,10,32),levMat(),[0,AH/2-.055,.04])); // articulación
+  arm.add(mesh(new THREE.CircleGeometry(.022,24),graphiteMat,[0,AH/2-.055,.039]));
+  const mount=new THREE.Group(); mount.position.set(0,-AH/2-.17,.04); arm.add(mount);
+  g.userData={p:new THREE.Vector3(),mount,side,th:0};
   root.add(g); return g;
 }
-const modA=makeModule(), modB=makeModule();
+const modA=makeModule(-1), modB=makeModule(1);
+const qT=new THREE.Quaternion(), qY=new THREE.Quaternion(), AXY=new THREE.Vector3(0,1,0), eA=new THREE.Euler();
 function makeTools(){
   const tools={};
   const cur=shapeFromPts([[0,0],[0,1],[.27,.74],[.45,1.12],[.6,1.05],[.42,.68],[.76,.68]]);
@@ -1083,22 +1089,30 @@ function frame(now){
   // módulos
   const dock=ui.dock||e.hands==='dock'; const kh=ease(6,dt);
   [[modA,0,'a'],[modB,1,'b']].forEach(([m,i,k])=>{
-    const ud=m.userData; let ry;
-    if(dock){sockets[i].getWorldPosition(wv);root.worldToLocal(wv);vA.copy(wv);ry=(i?1:-1)*Math.PI/2+body.rotation.y-mry;}
-    else{const h=e.hands[k];vA.set(h[0],h[1],h[2]);vA.x+=px*.08;ry=(i?-.25:.25)+px*.3;
+    const ud=m.userData, sd=ud.side; let th=0, ry=0;
+    if(dock){sockets[i].getWorldPosition(wv);root.worldToLocal(wv);vA.copy(wv).add(tv.set(0,APIV,0).applyQuaternion(body.quaternion));
+      qT.copy(body.quaternion).multiply(qY.setFromAxisAngle(AXY,sd*Math.PI/2));}
+    else{const h=e.hands[k];vA.set(h[0],h[1],h[2]);vA.x+=px*.08;ry=-sd*.3+px*.3;
+      let hy=h[1];
       if(!reduce&&e.anim==='type')vA.y+=Math.sin(t*24+i*1.7)*.018;
       if(!reduce&&e.anim==='sketch'&&i===1){vA.x+=Math.cos(t*3)*.07;vA.y+=Math.sin(t*3)*.05;}
       if(MW>.001||cw>.001){
-        const hs=mo.hset&&mo.hset[k]; if(hs)vA.lerp(tv.set(hs[0],hs[1],hs[2]),MW);
-        if(mo.spread){vA.x*=1+.3*mo.spread*MW;vA.y+=.25*mo.spread*MW;}
+        const hs=mo.hset&&mo.hset[k]; if(hs){vA.lerp(tv.set(hs[0],hs[1],hs[2]),MW);hy+=(hs[1]-hy)*MW;}
+        if(mo.spread){vA.x*=1+.3*mo.spread*MW;vA.y+=.25*mo.spread*MW;hy+=.4*mo.spread*MW;}
         const off=mo['h'+k]; if(off)vA.add(tv.set(off[0],off[1],off[2]).multiplyScalar(MW));
         if(mo.hj)vA.add(tv.set(Math.sin(t*50+i*2),Math.sin(t*43+i),0).multiplyScalar(mo.hj*MW));
         vA.applyEuler(mEuler.set(mrx,mry,mrz));
-      }}
-    ud.p.lerp(vA,kh); ud.ry+=(ry-ud.ry)*kh;
+      }
+      vA.x*=.84; vA.y=Math.min(vA.y,.12+.1*Math.max(0,hy-.12))+APIV;
+      th=sd*(.12+clamp(hy+.15,0,1.1)*1.6);
+      const fl=1;
+      eA.set(Math.sin(t*1.1+i)*.08*fl+mrx*.5, ry+mry, th+Math.sin(t*1.5+i)*.06*fl+(mo.hrz&&mo.hrz[k]?mo.hrz[k]*MW:0)+mrz);
+      qT.setFromEuler(eA);
+    }
+    ud.p.lerp(vA,kh); ud.th+=(th-ud.th)*kh; m.quaternion.slerp(qT,dock?ease(9,dt):kh);
+    ud.mount.rotation.z=-ud.th;
     const fl=dock?0:1;
     m.position.set(ud.p.x+Math.sin(t*1.3+i*2)*.015*fl,ud.p.y+Math.sin(t*1.9+i*1.4)*.035*fl+laugh*.5,ud.p.z);
-    m.rotation.set(Math.sin(t*1.1+i)*.08*fl+(dock?0:mrx*.5),ud.ry+mry,Math.sin(t*1.5+i)*.06*fl+(mo.hrz&&mo.hrz[k]?mo.hrz[k]*MW:0));
   });
   if(ui.tool!==lastTool){lastTool=ui.tool;ringBoost=1;}
   Object.keys(tools).forEach(k=>{const g=tools[k];const tgt=ui.tool===k?1:0;g.userData.s+=(tgt-g.userData.s)*ease(9,dt);

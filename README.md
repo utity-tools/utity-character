@@ -19,7 +19,7 @@ A character defined by **states and behaviour**, not just by its drawing. It wor
 - **Body:** a vertical navy capsule with ceramic cap and side panels. All body language comes from tilts and turns.
 - **Face:** a dark glass visor with two parametric light eyes and a small light mouth that moves when it talks.
 - **Belly display:** a chamfered status screen in the state colour: a heartbeat when idle, segmented progress while working, a check on success, an alert on error, drifting z's when asleep.
-- **Floating modules:** they carry the tool (cursor, wrench or terminal), so the character tells design and development at once.
+- **Floating arms:** the side panels detach from the body and become arms. They are pills with the brand chamfer at the tip, a navy shell, a ceramic face and a light edge in the state colour. They gesture by rotating, carry the tool (cursor, wrench or terminal) at the tip, and dock back as panels.
 - **Levitation light:** shows the current state.
 
 ## Expressions
@@ -64,7 +64,7 @@ Eight looping choreographies, layered on top of the expression with crossfades s
 
 `spin` · `flip` · `dance` · `sad` · `cold` · `excited` · `wave` · `figure-eight flight`
 
-Every motion anticipates, acts and settles. Modules and accessories follow with a delay, and squash is capped at 7 %: it's a machine, not rubber.
+Every motion anticipates, acts and settles. Arms and accessories follow with a delay, and squash is capped at 7 %: it's a machine, not rubber.
 
 ## States
 
