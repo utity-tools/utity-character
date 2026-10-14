@@ -17,7 +17,8 @@
 A character defined by **states and behaviour**, not just by its drawing. It works as the animated lead of the landing page and as the brand's voice on social media.
 
 - **Body:** a vertical navy capsule with ceramic cap and side panels. All body language comes from tilts and turns.
-- **Face:** a dark glass visor with two parametric light eyes.
+- **Face:** a dark glass visor with two parametric light eyes and a small light mouth that moves when it talks.
+- **Belly display:** a chamfered status screen in the state colour: a heartbeat when idle, segmented progress while working, a check on success, an alert on error, drifting z's when asleep.
 - **Floating modules:** they carry the tool (cursor, wrench or terminal), so the character tells design and development at once.
 - **Levitation light:** shows the current state.
 
@@ -36,6 +37,8 @@ There are 18 expressions in total. Every one comes from a single base eye shape 
 | Curvature | −1 – 1 | Positive arches upward (success) |
 | Chamfer | 0 – 1 | Always on the outer top corner |
 | Brow | 0 – 1 | Only in the *dry* expression ("Yeah, sure.") |
+
+The mouth follows the same logic with its own parameters (width, curve, openness, offset, tilt and wave). Its stroke is thinner than the eyes so it never competes with them, and it opens briefly every time the line of copy changes.
 
 Fixed: stroke weight, glow and scanline grid. There are 8 interchangeable base shapes; the recommended one is **01, chamfered pill**.
 
